@@ -20,8 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.cheapsharkreader.domain.repository.FavoritesRepository
 import com.example.cheapsharkreader.presentation.viewmodel.GameViewModel
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.getKoin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,6 +33,7 @@ fun GameListScreen(
 ) {
     val games by viewModel.games.collectAsState()
     var query by remember { mutableStateOf("batman") }
+    val favoritesRepo: FavoritesRepository = getKoin().get()
 
     LaunchedEffect(Unit) {
         viewModel.searchGames(query)
@@ -66,6 +69,15 @@ fun GameListScreen(
                 games = games,
                 onGameClick = { game ->
                     navController.navigate("deals/${game.id}")
+                },
+                onFavoriteClick = { game ->
+                    if (favoritesRepo.isFavorite(game.id))
+                        favoritesRepo.remove(game)
+                    else
+                        favoritesRepo.add(game)
+                },
+                isFavorite = { game ->
+                    favoritesRepo.isFavorite(game.id)
                 }
             )
         }

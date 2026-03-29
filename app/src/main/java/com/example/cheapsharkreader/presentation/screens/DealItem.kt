@@ -23,6 +23,7 @@ fun DealItem(
     stores: List<Store>
 ) {
     val store = stores.find { it.id == deal.storeId }
+    val savingsInt = deal.savings.toDoubleOrNull()?.toInt() ?: 0
 
     Card(
         modifier = Modifier
@@ -49,7 +50,7 @@ fun DealItem(
 
                 Text("Price: $ ${deal.price}")
                 Text("Retail: $ ${deal.retailPrice}")
-                Text("Savings: ${deal.savings}%")
+                Text("Savings: $savingsInt%")
             }
         }
     }

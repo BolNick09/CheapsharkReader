@@ -12,7 +12,9 @@ import com.example.cheapsharkreader.domain.model.Game
 @Composable
 fun GameGrid(
     games: List<Game>,
-    onGameClick: (Game) -> Unit
+    onGameClick: (Game) -> Unit,
+    onFavoriteClick: (Game) -> Unit,
+    isFavorite: (Game) -> Boolean
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 150.dp),
@@ -21,9 +23,12 @@ fun GameGrid(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(games) { game ->
-            GameItem(game) {
-                onGameClick(game)
-            }
+            GameItem(
+                game = game,
+                onClick = { onGameClick(game) },
+                onFavoriteClick = { onFavoriteClick(game) },
+                isFavorite = isFavorite(game)
+            )
         }
     }
 }

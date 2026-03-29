@@ -2,12 +2,15 @@ package com.example.cheapsharkreader.di
 
 import com.example.cheapsharkreader.data.remote.network.RetrofitInstance
 import com.example.cheapsharkreader.data.repository.DealRepositoryImpl
+import com.example.cheapsharkreader.data.repository.FavoritesRepositoryImpl
 import com.example.cheapsharkreader.data.repository.GameRepositoryImpl
 import com.example.cheapsharkreader.data.repository.StoreRepositoryImpl
 import com.example.cheapsharkreader.domain.repository.DealRepository
+import com.example.cheapsharkreader.domain.repository.FavoritesRepository
 import com.example.cheapsharkreader.domain.repository.GameRepository
 import com.example.cheapsharkreader.domain.repository.StoreRepository
 import com.example.cheapsharkreader.presentation.viewmodel.DealsViewModel
+import com.example.cheapsharkreader.presentation.viewmodel.FavoritesViewModel
 import com.example.cheapsharkreader.presentation.viewmodel.GameViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -33,5 +36,12 @@ val appModule = module {
 
     viewModel {
         DealsViewModel(get(), get())
+    }
+
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl()
+    }
+    viewModel {
+        FavoritesViewModel(get())
     }
 }
