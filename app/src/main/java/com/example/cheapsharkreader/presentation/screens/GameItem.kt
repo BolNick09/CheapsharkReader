@@ -1,5 +1,6 @@
 package com.example.cheapsharkreader.presentation.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,9 +16,12 @@ import coil.compose.AsyncImage
 import com.example.cheapsharkreader.domain.model.Game
 
 @Composable
-fun GameItem(game: Game) {
+fun GameItem(game: Game, onClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
+
     ) {
         Column(
             modifier = Modifier.padding(8.dp)
@@ -42,7 +46,7 @@ fun GameItem(game: Game) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = game.price,
+                text = game.price + "$",
                 style = MaterialTheme.typography.bodyMedium
             )
         }

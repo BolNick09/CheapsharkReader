@@ -10,7 +10,10 @@ import androidx.compose.ui.unit.dp
 import com.example.cheapsharkreader.domain.model.Game
 
 @Composable
-fun GameGrid(games: List<Game>) {
+fun GameGrid(
+    games: List<Game>,
+    onGameClick: (Game) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 150.dp),
         contentPadding = PaddingValues(8.dp),
@@ -18,7 +21,9 @@ fun GameGrid(games: List<Game>) {
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(games) { game ->
-            GameItem(game)
+            GameItem(game) {
+                onGameClick(game)
+            }
         }
     }
 }
