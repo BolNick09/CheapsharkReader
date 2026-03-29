@@ -34,6 +34,7 @@ fun GameListScreen(
     val games by viewModel.games.collectAsState()
     var query by remember { mutableStateOf("batman") }
     val favoritesRepo: FavoritesRepository = getKoin().get()
+    val favorites by favoritesRepo.favorites.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.searchGames(query)
@@ -50,7 +51,7 @@ fun GameListScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues) // 👈 вот он отступ под тулбар
+                .padding(paddingValues)
         ) {
 
             TextField(
@@ -71,13 +72,13 @@ fun GameListScreen(
                     navController.navigate("deals/${game.id}")
                 },
                 onFavoriteClick = { game ->
-                    if (favoritesRepo.isFavorite(game.id))
+                    if (favorites.any { it.id == game.id })
                         favoritesRepo.remove(game)
                     else
                         favoritesRepo.add(game)
                 },
                 isFavorite = { game ->
-                    favoritesRepo.isFavorite(game.id)
+                    favorites.any { it.id == game.id }
                 }
             )
         }
