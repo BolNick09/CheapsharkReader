@@ -1,0 +1,56 @@
+package com.example.cheapsharkreader.presentation.screens
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.example.cheapsharkreader.presentation.viewmodel.GameViewModel
+import org.koin.androidx.compose.koinViewModel
+
+@Composable
+fun GameListScreen(
+    viewModel: GameViewModel = koinViewModel()
+) {
+    val games by viewModel.games.collectAsState()
+
+    var query by remember { mutableStateOf("batman") }
+
+    LaunchedEffect(Unit) {
+        viewModel.searchGames(query)
+    }
+    //TODO Добавить спайсер
+    Column(modifier = Modifier.fillMaxSize()) {
+
+        // 🔍 Поиск
+        TextField(
+            value = query,
+            onValueChange = {
+                query = it
+                viewModel.searchGames(it)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            label = { Text("Search games") }
+        )
+
+        LazyColumn {//TODO->LazyGrid
+            items(games) { game ->
+                GameItem(game)
+            }
+        }
+    }
+}
