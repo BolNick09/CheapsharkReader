@@ -57,7 +57,7 @@ fun AppNavGraph() {
         ) {
 
             composable("favorites") {
-                FavoritesScreen()
+                FavoritesScreen(navController)
             }
 
             composable("games") {
