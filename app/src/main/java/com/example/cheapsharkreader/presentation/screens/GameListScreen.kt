@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -20,37 +23,45 @@ import androidx.compose.ui.unit.dp
 import com.example.cheapsharkreader.presentation.viewmodel.GameViewModel
 import org.koin.androidx.compose.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GameListScreen(
     viewModel: GameViewModel = koinViewModel()
 ) {
     val games by viewModel.games.collectAsState()
-
     var query by remember { mutableStateOf("batman") }
 
     LaunchedEffect(Unit) {
         viewModel.searchGames(query)
     }
-    //TODO Добавить спайсер
-    Column(modifier = Modifier.fillMaxSize()) {
 
-        // 🔍 Поиск
-        TextField(
-            value = query,
-            onValueChange = {
-                query = it
-                viewModel.searchGames(it)
-            },
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Game Deals") }
+            )
+        }
+    ) { paddingValues ->
+
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            label = { Text("Search games") }
-        )
+                .fillMaxSize()
+                .padding(paddingValues) // 👈 вот он отступ под тулбар
+        ) {
 
-        LazyColumn {//TODO->LazyGrid
-            items(games) { game ->
-                GameItem(game)
-            }
+            TextField(
+                value = query,
+                onValueChange = {
+                    query = it
+                    viewModel.searchGames(it)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                label = { Text("Search games") }
+            )
+
+            GameGrid(games)
         }
     }
 }
