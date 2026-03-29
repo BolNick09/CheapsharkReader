@@ -24,6 +24,7 @@ fun DealsScreen(
     viewModel: DealsViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val stores by viewModel.stores.collectAsState()
 
     LaunchedEffect(gameId) {
         viewModel.load(gameId)
@@ -33,7 +34,7 @@ fun DealsScreen(
 
         Column {
 
-            // 🖼 Картинка + название
+            // 🖼 Картинка игры
             AsyncImage(
                 model = game.image,
                 contentDescription = game.title,
@@ -42,15 +43,17 @@ fun DealsScreen(
                     .height(200.dp)
             )
 
+            // 🎮 Название
             Text(
                 text = game.title,
                 style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(8.dp)
             )
 
+            // 👇 ВОТ СЮДА вставляется LazyColumn
             LazyColumn {
                 items(game.deals) { deal ->
-                    DealItem(deal)
+                    DealItem(deal, stores)
                 }
             }
         }

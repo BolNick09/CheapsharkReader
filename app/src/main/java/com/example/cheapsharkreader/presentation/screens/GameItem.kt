@@ -46,7 +46,7 @@ fun GameItem(game: Game, onClick: () -> Unit) {
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = game.price + "$",
+                text = "$" + game.price,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
