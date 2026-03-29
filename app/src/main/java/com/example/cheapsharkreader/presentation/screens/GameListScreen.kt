@@ -19,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.cheapsharkreader.domain.repository.FavoritesRepository
 import com.example.cheapsharkreader.presentation.viewmodel.GameViewModel
 import org.koin.androidx.compose.koinViewModel

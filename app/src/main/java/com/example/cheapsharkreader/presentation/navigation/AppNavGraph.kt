@@ -2,10 +2,8 @@ package com.example.cheapsharkreader.presentation.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Airplay
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Games
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -52,7 +50,7 @@ fun AppNavGraph() {
 
         NavHost(
             navController = navController,
-            startDestination = "favorites", // 👈 ВАЖНО
+            startDestination = "favorites",
             modifier = Modifier.padding(padding)
         ) {
 

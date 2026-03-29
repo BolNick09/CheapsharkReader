@@ -32,7 +32,6 @@ fun DealItem(
     ) {
         Row(modifier = Modifier.padding(12.dp)) {
 
-            // 🖼 Иконка магазина
             AsyncImage(
                 model = store?.icon,
                 contentDescription = store?.name,
