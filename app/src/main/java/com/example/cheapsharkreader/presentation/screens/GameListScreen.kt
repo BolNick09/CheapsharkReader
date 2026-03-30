@@ -1,28 +1,22 @@
 package com.example.cheapsharkreader.presentation.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.cheapsharkreader.domain.repository.FavoritesRepository
 import com.example.cheapsharkreader.presentation.viewmodel.GameViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.getKoin
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,13 +25,21 @@ fun GameListScreen(
     viewModel: GameViewModel = koinViewModel()
 ) {
     val games by viewModel.games.collectAsState()
-    var query by remember { mutableStateOf("batman") }
-    val favoritesRepo: FavoritesRepository = getKoin().get()
-    val favorites by favoritesRepo.favorites.collectAsState()
 
-    LaunchedEffect(Unit) {
-        viewModel.searchGames(query)
+    var query by remember { mutableStateOf("") }
+
+    val favoritesRepo: FavoritesRepository = getKoin().get()
+    val favorites by favoritesRepo.favorites.collectAsState(initial = emptyList())
+
+    val displayGames = remember(query, games) {
+        if (query.isBlank()) {
+            games
+        } else {
+            games
+        }
     }
+
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -57,7 +59,10 @@ fun GameListScreen(
                 value = query,
                 onValueChange = {
                     query = it
-                    viewModel.searchGames(it)
+
+                    if (it.isNotBlank()) {
+                        viewModel.searchGames(it)
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -65,21 +70,41 @@ fun GameListScreen(
                 label = { Text("Search games") }
             )
 
-            GameGrid(
-                games = games,
-                onGameClick = { game ->
-                    navController.navigate("deals/${game.id}")
-                },
-                onFavoriteClick = { game ->
-                    if (favorites.any { it.id == game.id })
-                        favoritesRepo.remove(game)
-                    else
-                        favoritesRepo.add(game)
-                },
-                isFavorite = { game ->
-                    favorites.any { it.id == game.id }
+            if (displayGames.isEmpty()) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = androidx.compose.ui.Alignment.Center
+                ) {
+                    Text("No games found")
                 }
-            )
+            } else {
+
+                GameGrid(
+                    games = displayGames,
+
+                    onGameClick = { game ->
+                        navController.navigate(
+                            "deals/${game.id}/" +
+                                    "${URLEncoder.encode(game.title, StandardCharsets.UTF_8.toString())}/" +
+                                    "${URLEncoder.encode(game.image, StandardCharsets.UTF_8.toString())}"
+                        )
+                    },
+
+                    onFavoriteClick = { game ->
+                        scope.launch {
+                            if (favorites.any { it.id == game.id }) {
+                                favoritesRepo.remove(game)
+                            } else {
+                                favoritesRepo.add(game)
+                            }
+                        }
+                    },
+
+                    isFavorite = { game ->
+                        favorites.any { it.id == game.id }
+                    }
+                )
+            }
         }
     }
 }

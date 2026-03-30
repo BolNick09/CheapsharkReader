@@ -1,5 +1,7 @@
 package com.example.cheapsharkreader.di
 
+import androidx.room.Room
+import com.example.cheapsharkreader.data.local.database.AppDatabase
 import com.example.cheapsharkreader.data.remote.network.RetrofitInstance
 import com.example.cheapsharkreader.data.repository.DealRepositoryImpl
 import com.example.cheapsharkreader.data.repository.FavoritesRepositoryImpl
@@ -20,7 +22,7 @@ val appModule = module {
     single { RetrofitInstance.api }
 
     single<GameRepository> {
-        GameRepositoryImpl(get())
+        GameRepositoryImpl(get(), get())
     }
 
     viewModel {
@@ -28,7 +30,7 @@ val appModule = module {
     }
 
     single<DealRepository> {
-        DealRepositoryImpl(get())
+        DealRepositoryImpl(get(), get())
     }
     single<StoreRepository> {
         StoreRepositoryImpl(get())
@@ -39,9 +41,22 @@ val appModule = module {
     }
 
     single<FavoritesRepository> {
-        FavoritesRepositoryImpl()
+        FavoritesRepositoryImpl(get())
     }
     viewModel {
         FavoritesViewModel(get())
     }
+
+
+    single {
+        Room.databaseBuilder(
+            get(),
+            AppDatabase::class.java,
+            "cheapshark_db"
+        ).build()
+    }
+
+    single { get<AppDatabase>().gameDao() }
+    single { get<AppDatabase>().dealDao() }
+    single { get<AppDatabase>().favoriteDao() }
 }

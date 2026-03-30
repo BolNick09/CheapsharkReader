@@ -62,9 +62,19 @@ fun AppNavGraph() {
                 GameListScreen(navController)
             }
 
-            composable("deals/{gameId}") {
-                val id = it.arguments?.getString("gameId") ?: ""
-                DealsScreen(id)
+            composable(
+                "deals/{gameId}/{title}/{image}"
+            ) { backStackEntry ->
+
+                val gameId = backStackEntry.arguments?.getString("gameId") ?: ""
+                val title = backStackEntry.arguments?.getString("title") ?: ""
+                val image = backStackEntry.arguments?.getString("image") ?: ""
+
+                DealsScreen(
+                    gameId = gameId,
+                    title = title,
+                    image = image
+                )
             }
         }
     }

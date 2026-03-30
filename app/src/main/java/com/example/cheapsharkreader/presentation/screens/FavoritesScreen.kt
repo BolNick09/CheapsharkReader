@@ -11,14 +11,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.cheapsharkreader.domain.repository.FavoritesRepository
 import com.example.cheapsharkreader.presentation.viewmodel.FavoritesViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.getKoin
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun FavoritesScreen(
@@ -27,6 +31,7 @@ fun FavoritesScreen(
     favoritesRepository: FavoritesRepository = getKoin().get()
 ) {
     val favorites by viewModel.favorites.collectAsState()
+    val scope = rememberCoroutineScope()
 
     if (favorites.isEmpty()) {
         Box(
@@ -48,10 +53,16 @@ fun FavoritesScreen(
                 GameItem(
                     game = game,
                     onClick = {
-                        navController.navigate("deals/${game.id}")
+                        navController.navigate(
+                            "deals/${game.id}/" +
+                                    "${URLEncoder.encode(game.title, StandardCharsets.UTF_8.toString())}/" +
+                                    "${URLEncoder.encode(game.image, StandardCharsets.UTF_8.toString())}"
+                        )
                     },
                     onFavoriteClick = {
-                        favoritesRepository.remove(game)
+                        scope.launch {
+                            favoritesRepository.remove(game)
+                        }
                     },
                     isFavorite = true
                 )
