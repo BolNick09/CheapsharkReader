@@ -32,6 +32,7 @@ class GameRepositoryImpl(
                     id = it.gameID,
                     title = it.external,
                     thumb = it.thumb,
+                    price = it.cheapest ?: "0",
                     lastUpdated = System.currentTimeMillis()
                 )
             }

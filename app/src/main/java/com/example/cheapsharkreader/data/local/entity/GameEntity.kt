@@ -8,5 +8,6 @@ data class GameEntity(
     @PrimaryKey val id: String,
     val title: String,
     val thumb: String,
+    val price: String,
     val lastUpdated: Long
 )

@@ -50,10 +50,11 @@ val appModule = module {
 
     single {
         Room.databaseBuilder(
-            get(),
-            AppDatabase::class.java,
-            "cheapshark_db"
-        ).build()
+                get(),
+                AppDatabase::class.java,
+                "cheapshark_db"
+            ).fallbackToDestructiveMigration(false)
+            .build()
     }
 
     single { get<AppDatabase>().gameDao() }

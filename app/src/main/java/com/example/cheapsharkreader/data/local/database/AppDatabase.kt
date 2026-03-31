@@ -11,7 +11,7 @@ import com.example.cheapsharkreader.data.local.entity.GameEntity
 
 @Database(
     entities = [GameEntity::class, DealEntity::class, FavoriteEntity::class],
-    version = 1
+    version = 2
 )
 abstract class AppDatabase : RoomDatabase() {
 

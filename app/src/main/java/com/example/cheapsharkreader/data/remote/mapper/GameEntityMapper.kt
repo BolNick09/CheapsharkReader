@@ -7,12 +7,13 @@ import com.example.cheapsharkreader.domain.model.Game
 fun GameEntity.toDomain() = Game(
     id = id,
     title = title,
-    price = "0",
+    price = price,
     image = thumb
 )
 fun Game.toEntity() = GameEntity(
     id = id,
     title = title,
     thumb = image,
+    price = price,
     lastUpdated = System.currentTimeMillis()
 )
