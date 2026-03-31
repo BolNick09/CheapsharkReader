@@ -6,8 +6,3 @@ data class StoreDto(
     val images: StoreImagesDto
 )
 
-data class StoreImagesDto(
-    val banner: String,
-    val logo: String,
-    val icon: String
-)
