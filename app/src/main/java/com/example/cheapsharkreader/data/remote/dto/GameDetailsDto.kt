@@ -5,7 +5,3 @@ data class GameDetailsDto(
     val deals: List<DealDto>
 )
 
-data class GameInfoDto(
-    val title: String,
-    val thumb: String
-)
