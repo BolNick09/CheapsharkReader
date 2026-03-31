@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.cheapsharkreader.R
 import com.example.cheapsharkreader.domain.repository.FavoritesRepository
 import com.example.cheapsharkreader.presentation.viewmodel.GameViewModel
 import kotlinx.coroutines.launch
@@ -31,20 +33,14 @@ fun GameListScreen(
     val favoritesRepo: FavoritesRepository = getKoin().get()
     val favorites by favoritesRepo.favorites.collectAsState(initial = emptyList())
 
-    val displayGames = remember(query, games) {
-        if (query.isBlank()) {
-            games
-        } else {
-            games
-        }
-    }
+    val displayGames = games
 
     val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Game Deals") }
+                title = { Text(stringResource(R.string.game_deals)) }
             )
         }
     ) { paddingValues ->
@@ -67,7 +63,7 @@ fun GameListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                label = { Text("Search games") }
+                label = { Text(stringResource(R.string.search_games)) }
             )
 
             if (displayGames.isEmpty()) {
@@ -75,7 +71,7 @@ fun GameListScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = androidx.compose.ui.Alignment.Center
                 ) {
-                    Text("No games found")
+                    Text(stringResource(R.string.no_games_found))
                 }
             } else {
 

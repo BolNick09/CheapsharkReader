@@ -11,12 +11,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cheapsharkreader.R
 import com.example.cheapsharkreader.presentation.screens.DealsScreen
 import com.example.cheapsharkreader.presentation.screens.FavoritesScreen
 import com.example.cheapsharkreader.presentation.screens.GameListScreen
+import java.net.URLDecoder
 
 @Composable
 fun AppNavGraph() {
@@ -33,7 +36,7 @@ fun AppNavGraph() {
                     icon = {
                         Icon(Icons.Default.Favorite, null)
                     },
-                    label = { Text("Favorites") }
+                    label = { Text(stringResource(R.string.favorites)) }
                 )
 
                 NavigationBarItem(
@@ -42,7 +45,7 @@ fun AppNavGraph() {
                     icon = {
                         Icon(Icons.Default.Games, null)
                     },
-                    label = { Text("Games") }
+                    label = { Text(stringResource(R.string.games)) }
                 )
             }
         }
@@ -67,8 +70,11 @@ fun AppNavGraph() {
             ) { backStackEntry ->
 
                 val gameId = backStackEntry.arguments?.getString("gameId") ?: ""
-                val title = backStackEntry.arguments?.getString("title") ?: ""
-                val image = backStackEntry.arguments?.getString("image") ?: ""
+                val rawTitle = backStackEntry.arguments?.getString("title") ?: ""
+                val title = URLDecoder.decode(rawTitle, "UTF-8")
+
+                val rawImage = backStackEntry.arguments?.getString("image") ?: ""
+                val image = URLDecoder.decode(rawImage, "UTF-8")
 
                 DealsScreen(
                     gameId = gameId,

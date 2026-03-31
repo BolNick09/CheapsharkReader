@@ -5,7 +5,6 @@ import com.example.cheapsharkreader.data.local.entity.DealEntity
 import com.example.cheapsharkreader.data.remote.api.CheapSharkApi
 import com.example.cheapsharkreader.data.remote.mapper.toDomain
 import com.example.cheapsharkreader.domain.model.Deal
-import com.example.cheapsharkreader.domain.model.GameDetails
 import com.example.cheapsharkreader.domain.repository.DealRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
