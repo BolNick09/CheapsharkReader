@@ -7,9 +7,7 @@ import com.example.cheapsharkreader.domain.repository.FavoritesRepository
 import com.example.cheapsharkreader.domain.repository.GameRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
-
 import kotlinx.coroutines.launch
-import kotlin.collections.emptyList
 
 class GameViewModel(
     private val repository: GameRepository,
