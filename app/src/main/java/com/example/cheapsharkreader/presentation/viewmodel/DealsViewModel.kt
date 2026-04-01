@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cheapsharkreader.domain.model.Store
 import com.example.cheapsharkreader.domain.repository.DealRepository
 import com.example.cheapsharkreader.domain.repository.StoreRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +20,7 @@ class DealsViewModel(
 
     private val _gameId = MutableStateFlow("")
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val deals = _gameId
         .flatMapLatest { id ->
             dealRepository.getDeals(id)
@@ -32,7 +34,7 @@ class DealsViewModel(
         _gameId.value = gameId
 
         viewModelScope.launch {
-            dealRepository.loadDeals(gameId) // 👈 API → DB
+            dealRepository.loadDeals(gameId)
             _stores.value = storeRepository.getStores()
         }
     }

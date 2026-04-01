@@ -26,7 +26,7 @@ val appModule = module {
     }
 
     viewModel {
-        GameViewModel(get())
+        GameViewModel(get(), get())
     }
 
     single<DealRepository> {
@@ -53,7 +53,7 @@ val appModule = module {
                 get(),
                 AppDatabase::class.java,
                 "cheapshark_db"
-            ).fallbackToDestructiveMigration(false)
+            ).fallbackToDestructiveMigration(true)
             .build()
     }
 

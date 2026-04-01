@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Upsert
 import com.example.cheapsharkreader.data.local.entity.GameEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -13,7 +14,7 @@ interface GameDao {
     @Query("SELECT * FROM games")
     fun getAll(): Flow<List<GameEntity>>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertAll(games: List<GameEntity>)
 
     @Query("DELETE FROM games")

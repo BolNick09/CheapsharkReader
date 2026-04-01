@@ -79,7 +79,8 @@ fun AppNavGraph() {
                 DealsScreen(
                     gameId = gameId,
                     title = title,
-                    image = image
+                    image = image,
+                    navController = navController
                 )
             }
         }

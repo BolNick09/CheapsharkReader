@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.cheapsharkreader"
-        minSdk = 27
+        minSdk = 27     //TODO указать в системных требованиях в readMe
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -58,7 +58,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.compose.material:material-icons-extended") //TODO разрешить все warning
 
     val comp_version = "2.9.7"
     implementation("androidx.navigation:navigation-compose:${comp_version}")

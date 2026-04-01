@@ -16,9 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.cheapsharkreader.domain.model.Game
+
 
 @Composable
 fun GameItem(
@@ -68,4 +70,19 @@ fun GameItem(
             }
         }
     }
+}
+@Preview()
+@Composable
+fun GameItemPreview() {
+    GameItem(
+        game = Game(
+            id = "1",
+            title = "Batman Arkham Knight",
+            price = "5.99",
+            image = ""
+        ),
+        onClick = {},
+        onFavoriteClick = {},
+        isFavorite = true
+    )
 }

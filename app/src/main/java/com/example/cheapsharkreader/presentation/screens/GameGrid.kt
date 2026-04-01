@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cheapsharkreader.domain.model.Game
 
@@ -31,4 +32,18 @@ fun GameGrid(
             )
         }
     }
+}
+
+@Preview()
+@Composable
+fun GameGridPreview() {
+    GameGrid(
+        games = listOf(
+            Game("1", "Game 1", "3.99", ""),
+            Game("2", "Game 2", "5.99", "")
+        ),
+        onGameClick = {},
+        onFavoriteClick = {},
+        isFavorite = { false }
+    )
 }

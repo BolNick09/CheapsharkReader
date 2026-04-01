@@ -5,20 +5,29 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.cheapsharkreader.R
-import com.example.cheapsharkreader.domain.repository.FavoritesRepository
+import com.example.cheapsharkreader.domain.model.Game
 import com.example.cheapsharkreader.presentation.viewmodel.GameViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.getKoin
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,15 +36,10 @@ fun GameListScreen(
     viewModel: GameViewModel = koinViewModel()
 ) {
     val games by viewModel.games.collectAsState()
+    val favorites by viewModel.favorites.collectAsState()
 
     var query by remember { mutableStateOf("") }
-
-    val favoritesRepo: FavoritesRepository = getKoin().get()
-    val favorites by favoritesRepo.favorites.collectAsState(initial = emptyList())
-
     val displayGames = games
-
-    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -87,13 +91,7 @@ fun GameListScreen(
                     },
 
                     onFavoriteClick = { game ->
-                        scope.launch {
-                            if (favorites.any { it.id == game.id }) {
-                                favoritesRepo.remove(game)
-                            } else {
-                                favoritesRepo.add(game)
-                            }
-                        }
+                        viewModel.toggleFavorite(game)
                     },
 
                     isFavorite = { game ->
@@ -103,4 +101,43 @@ fun GameListScreen(
             }
         }
     }
+}
+
+@Composable
+fun GameListContent(
+    games: List<Game>,
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onGameClick: (Game) -> Unit,
+    onFavoriteClick: (Game) -> Unit,
+    isFavorite: (Game) -> Boolean
+) {
+    Column {
+        TextField(
+            value = query,
+            onValueChange = onQueryChange
+        )
+
+        GameGrid(
+            games = games,
+            onGameClick = onGameClick,
+            onFavoriteClick = onFavoriteClick,
+            isFavorite = isFavorite
+        )
+    }
+}
+@Preview()
+@Composable
+fun GameListScreenPreview() {
+    GameListContent(
+        games = listOf(
+            Game("1", "Game 1", "3.99", ""),
+            Game("2", "Game 2", "5.99", "")
+        ),
+        query = "",
+        onQueryChange = {},
+        onGameClick = {},
+        onFavoriteClick = {},
+        isFavorite = { false }
+    )
 }
